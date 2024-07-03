@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
     skip_before_action :verify_authenticity_token, if: :json_request?
 
+    protect_from_forgery with: :null_session
+
     before_action :set_user, only: [:show, :update, :destroy]
   
     # GET /users
@@ -46,7 +48,7 @@ class UsersController < ApplicationController
     end
   
     def user_params
-      params.require(:user).permit(:username, :nombre, :apellido, :password, :password_confirmation, :approved)
+      params.require(:user).permit(:username, :nombre, :apellido, :email, :password, :password_confirmation, :approved)
     end
 
     def json_request?
