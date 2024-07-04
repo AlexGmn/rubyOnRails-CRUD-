@@ -24,7 +24,7 @@ class UsersController < ApplicationController
         if @user.approved
           render json: @user, status: :created
         else
-          render json: { error: "Usuario No Aprovado." }, status: :forbidden
+          render json: { error: "Usuario No Aprobado." }, status: :forbidden
         end
       else
           render json: @user.errors, status: :unprocessable_entity
