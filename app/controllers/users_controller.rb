@@ -19,15 +19,19 @@ class UsersController < ApplicationController
   
     # POST /users
     def create
+      logger.debug "Received parameters: #{params.inspect}"
+      
       @user = User.new(user_params)
       if @user.save
-        if @user.approved
+        #if @user.approved
           render json: @user, status: :created
-        else
-          render json: { error: "Usuario No Aprobado." }, status: :forbidden
-        end
+        #else
+        #  render json: { error: "Usuario No Aprobado." }, status: :forbidden
+        #end
       else
-          render json: @user.errors, status: :unprocessable_entity
+          print (user_params)
+          render json:  { errors: @user_params }, status: :unprocessable_entity
+          
       end
     end
   
@@ -53,7 +57,7 @@ class UsersController < ApplicationController
     end
   
     def user_params
-      params.require(:user).permit(:username, :nombre, :apellido, :email, :password, :password_confirmation, :approved)
+      params.require(:user).permit(:nombre, :apellido, :email, :password, :username)
     end
 
     def json_request?
