@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     # PATCH/PUT /users/:id
     def update
       if @user.update(user_params)
-        render json: @user
+        render json: { message: "Actualización Correcta", user: user, token: generate_token(user.id) }, status: :ok
       else
         render json: @user.errors, status: :unprocessable_entity
       end
