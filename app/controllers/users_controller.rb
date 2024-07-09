@@ -2,7 +2,8 @@ class UsersController < ApplicationController
 
     protect_from_forgery with: :null_session
     
-    before_action :authorize, except: [:create]
+    #before_action :authenticate_request, except: [:create]
+    skip_before_action :verify_authenticity_token, only: [:create]
 
     before_action :set_user, only: [:show, :update, :destroy]
     
@@ -19,19 +20,18 @@ class UsersController < ApplicationController
   
     # POST /users
     def create
-      logger.debug "Received parameters: #{params.inspect}"
+      logger.debug "Received parameters users_contr: #{params.inspect}"
+      logger.info "Request body: #{request.body.read}"
       
       @user = User.new(user_params)
       if @user.save
         #if @user.approved
-          render json: @user, status: :created
+        render json: @user, status: :created
         #else
         #  render json: { error: "Usuario No Aprobado." }, status: :forbidden
         #end
       else
-          print (user_params)
-          render json:  { errors: @user_params }, status: :unprocessable_entity
-          
+        render json:  { errors: @user_params }, status: :unprocessable_entity   
       end
     end
   
